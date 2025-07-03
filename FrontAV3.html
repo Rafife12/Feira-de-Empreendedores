@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Feira de Empreendedores LGBTQIA+</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #E40303, #FF8C00, #FFED00, #008026, #004DFF, #750787);
+    color: #f0f0f0;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header, footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  footer p {
+    color: #ffffff;
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+  }
+
+  nav a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #FFF;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  nav a:hover,
+  nav a:focus {
+    background-color: #fff;
+    color: #0b4fed;
+    outline: none;
+  }
+
+  .banner {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 2rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #FFF;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    margin: 1.5rem auto;
+    max-width: 900px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  h1, h2, h3 {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    margin: 0.5rem 0;
+    color: #FFF;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+  }
+
+  main {
+    padding: 1rem 2rem;
+    max-width: 1100px;
+    margin: auto;
+  }
+
+  select, button {
+    padding: 0.6rem 1rem;
+    margin: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  select {
+    background-color: #750787;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.25);
+  }
+
+  select:hover,
+  select:focus {
+    background-color: #004DFF;
+    outline: none;
+  }
+
+  button {
+    background: rgb(87, 85, 85);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: none;
+  }
+
+  button:hover,
+  button:focus {
+    filter: brightness(1.1);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+    outline: none;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background-color: #fff;
+    color: #222;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 6px solid;
+    border-image: linear-gradient(90deg, #E40303, #FF8C00, #FFED00, #008026, #004DFF, #750787) 1;
+  }
+
+  .card div {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #E40303;
+  }
+
+  .card p {
+    margin: 0.3rem 0 1rem 0;
+    font-weight: 600;
+    color: #555;
+    flex-grow: 1;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    color: #222;
+    padding: 2rem;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+  .modal-content h2 {
+    margin-top: 0;
+    color: #E40303;
+  }
+
+  .modal-content img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #444;
+  }
+
+  .modal-content button {
+    background: #E40303;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .modal-content button:hover,
+  .modal-content button:focus {
+    background-color: #B80000;
+    outline: none;
+  }
+
+  p, option {
+    color: #222;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  select option {
+    color: #222;
+  }
+
+  @media (max-width: 600px) {
+    .banner {
+      font-size: 1.8rem;
+      height: 180px;
+      margin: 1rem;
+      padding: 1rem;
+    }
+
+    nav ul {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="root"></div>
+<script type="text/babel">
+
+function App() {
+  const [empreendedores, setEmpreendedores] = React.useState([]);
+  const [filtros, setFiltros] = React.useState({ categoria: "", local: "", identidade: "" });
+  const [modalEmpreendedor, setModalEmpreendedor] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("http://localhost:5000/empreendedores")
+      .then((res) => res.json())
+      .then((data) => setEmpreendedores(data))
+      .catch((err) => console.error("Erro ao buscar dados:", err));
+  }, []);
+
+  const handleFiltroChange = (e) => {
+    const { name, value } = e.target;
+    setFiltros((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const empreendedoresFiltrados = empreendedores.filter((e) => {
+    const matchCategoria = filtros.categoria === "" || (e.categoria && e.categoria.toLowerCase() === filtros.categoria);
+    const matchLocal = filtros.local === "" || (e.local && e.local.toLowerCase() === filtros.local);
+    const matchIdentidade = filtros.identidade === "" || (e.identidade && e.identidade.toLowerCase() === filtros.identidade);
+    return matchCategoria && matchLocal && matchIdentidade;
+  });
+
+  return (
+    <>
+      <header>
+        <h1>Feira LGBTQIA+</h1>
+        <nav>
+          <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#catalogo">Catálogo</a></li>
+            <li><a href="#contato">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <section className="banner" id="inicio">
+        <h2>Descubra e apoie negócios da comunidade LGBTQIA+</h2>
+      </section>
+
+      <main>
+        <section id="catalogo">
+          <h2 style={{ textAlign: 'center' }}>Catálogo de Empreendedores</h2>
+          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1rem' }}>
+            <select name="categoria" value={filtros.categoria} onChange={handleFiltroChange}>
+              <option value="">Todas as Categorias</option>
+              <option value="moda">Moda</option>
+              <option value="gastronomia">Gastronomia</option>
+              <option value="artes">Artes</option>
+              <option value="esporte">Esporte</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="beleza">Beleza</option>
+              <option value="saude">Saúde</option>
+              <option value="educacao">Educação</option>
+              <option value="entretenimento">Entretenimento</option>
+            </select>
+
+            <select name="local" value={filtros.local} onChange={handleFiltroChange}>
+              <option value="">Todos os Locais</option>
+              <option value="ac">Acre</option>
+              <option value="al">Alagoas</option>
+              <option value="ap">Amapá</option>
+              <option value="am">Amazonas</option>
+              <option value="ba">Bahia</option>
+              <option value="ce">Ceará</option>
+              <option value="df">Distrito Federal</option>
+              <option value="es">Espírito Santo</option>
+              <option value="go">Goiás</option>
+              <option value="ma">Maranhão</option>
+              <option value="mt">Mato Grosso</option>
+              <option value="ms">Mato Grosso do Sul</option>
+              <option value="mg">Minas Gerais</option>
+              <option value="pa">Pará</option>
+              <option value="pb">Paraíba</option>
+              <option value="pr">Paraná</option>
+              <option value="pe">Pernambuco</option>
+              <option value="pi">Piauí</option>
+              <option value="rj">Rio de Janeiro</option>
+              <option value="rn">Rio Grande do Norte</option>
+              <option value="rs">Rio Grande do Sul</option>
+              <option value="ro">Rondônia</option>
+              <option value="rr">Roraima</option>
+              <option value="sc">Santa Catarina</option>
+              <option value="sp">São Paulo</option>
+              <option value="se">Sergipe</option>
+              <option value="to">Tocantins</option>
+            </select>
+
+            <select name="identidade" value={filtros.identidade} onChange={handleFiltroChange}>
+              <option value="">Todas as Identidades</option>
+              <option value="lesbica">Lésbica</option>
+              <option value="gay">Gay</option>
+              <option value="bissexual">Bissexual</option>
+              <option value="trans">Trans</option>
+              <option value="queer">Queer</option>
+              <option value="intersexo">Intersexo</option>
+              <option value="assexual">Assexual</option>
+              <option value="não-binario">Não-Binário</option>
+            </select>
+          </div>
+
+          <div className="grid">
+            {empreendedoresFiltrados.length > 0 ? (
+              empreendedoresFiltrados.map((e, i) => (
+                <div key={i} className="card">
+                  <img src={e.imagem} alt={e.nome} />
+                  <div>
+                    <h3>{e.nome}</h3>
+                    <p>{e.categoria} - {e.local}</p>
+                    <button onClick={() => setModalEmpreendedor(e)}>Ver Perfil</button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p style={{ gridColumn: '1 / -1', color: '#FFDCDC', textAlign: 'center', fontWeight: '600' }}>
+                Nenhum empreendedor encontrado com os filtros selecionados.
+              </p>
+            )}
+          </div>
+        </section>
+      </main>
+
+      {modalEmpreendedor && (
+        <div className="modal" onClick={() => setModalEmpreendedor(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <h2>{modalEmpreendedor.nome}</h2>
+            <img src={modalEmpreendedor.imagem} alt={modalEmpreendedor.nome} />
+            <p>{modalEmpreendedor.descricao}</p>
+            <button onClick={() => setModalEmpreendedor(null)}>Fechar</button>
+          </div>
+        </div>
+      )}
+
+      <footer id="contato">
+        <p>© 2025 Feira LGBTQIA+<br />Todos os direitos reservados.</p>
+        <p>+55 71998765-4321 <br /> feiralgbt@gmail.com </p>
+      </footer>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
