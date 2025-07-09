@@ -27,7 +27,7 @@ Este projeto tem como objetivo criar um espaço digital inclusivo para promover,
 - 📋 **Listagem de empreendedores** em formato de catálogo com cartões visuais
 - 🔍 **Filtros inteligentes por**:
   - Categoria do negócio (moda, gastronomia, tecnologia, etc.)
-  - Localização (estado)
+  - Localização (UF)
   - Identidade (gênero ou orientação)
 - 📦 **Integração com Firestore**: backend Flask acessa dados em tempo real
 - 🧾 **Modal com perfil completo do empreendedor**, incluindo imagem e descrição
